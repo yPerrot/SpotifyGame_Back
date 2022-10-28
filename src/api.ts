@@ -3,13 +3,33 @@ import axios from 'axios';
 
 type TimeRange = 'short_term' | 'medium_term' | 'long_term';
 
-
 /**
  * getTopTracks
  * @params limit: 0 =< limit =< 50
  */
-export async function getTopTracks(access_token: string, range: TimeRange, limit: number) {
+export async function getTopTracks(access_token: string, range: TimeRange, limit: number): Promise<TopTracksReponse> {
     const baseURL = 'https://api.spotify.com/v1/me/top/tracks';
+    const params = new URLSearchParams({
+        limit: limit.toString(),
+        time_range: range,
+    });
+    const URL = `${baseURL}?${params.toString()}`;
+
+    const response = await axios.get(URL, {
+        headers: {
+            Authorization: 'Bearer ' + access_token,
+        },
+    });
+
+    return response.data;
+}
+
+/**
+ * getTopArtists
+ * @params limit: 0 =< limit =< 50
+ */
+export async function getTopArtists(access_token: string, range: TimeRange, limit: number): Promise<TopArtistsReponse> {
+    const baseURL = 'https://api.spotify.com/v1/me/top/artists';
     const params = new URLSearchParams({
         limit: limit.toString(),
         time_range: range,
@@ -28,16 +48,16 @@ export async function getTopTracks(access_token: string, range: TimeRange, limit
 // Generated Types
 
 export interface TopTracksReponse {
-    items: Item[];
+    items: TopTrack[];
     total: number;
     limit: number;
     offset: number;
     href: string;
-    previous: null;
-    next: string;
+    previous: string | null;
+    next: string | null;
 }
 
-export interface Item {
+export interface TopTrack {
     album: Album;
     artists: Artist[];
     available_markets: string[];
@@ -53,6 +73,29 @@ export interface Item {
     popularity: number;
     preview_url: string;
     track_number: number;
+    type: string;
+    uri: string;
+}
+
+export interface TopArtistsReponse {
+    items: TopArtist[];
+    total: number;
+    limit: number;
+    offset: number;
+    href: string;
+    previous: string | null;
+    next: string | null;
+}
+
+export interface TopArtist {
+    external_urls: ExternalUrls;
+    followers: Followers;
+    genres: string[];
+    href: string;
+    id: string;
+    images: Image[];
+    name: string;
+    popularity: number;
     type: string;
     uri: string;
 }
@@ -94,5 +137,10 @@ export interface Image {
 
 export interface ExternalIDS {
     isrc: string;
+}
+
+export interface Followers {
+    href: null;
+    total: number;
 }
 
