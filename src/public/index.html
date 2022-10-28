@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpotifyGame</title>
+</head>
+<body>
+    <h1>My Spotify Game</h1>
+    <a href="/login" class="btn btn-primary">Log in with Spotify</a>
+    <h2 id="logged" style="display: none;">You are logged</h2>
+
+<script>
+console.log(window.location.hash.substring(1));
+const urlParams = new URLSearchParams(window.location.hash.substring(1));
+console.log(urlParams);
+console.log(urlParams.get('access_token'));
+</script>
+</body>
+</html>
