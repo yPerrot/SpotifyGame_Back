@@ -3,11 +3,12 @@ import cookieParser from 'cookie-parser';
 import express from 'express';
 import axios from 'axios';
 import * as dotenv from 'dotenv'; // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
+import path from 'path';
 import { generateRandomString } from './utils';
+import { getTopArtists, getTopTracks } from './api';
 
 const app = express();
 dotenv.config();
-
 
 // VARIABLES
 const PORT = 8888;
@@ -18,17 +19,24 @@ const redirect_uri = process.env.redirect_uri!;
 
 const stateKey = 'spotify_auth_state';
 
+// Your application requests authorization
+const appAuthorization = [
+    'user-read-private',
+    'user-read-email',
+    'user-top-read',
+];
+
 app.use(cors()).use(cookieParser());
 
 // Main point
-app.get('/', express.static(__dirname + '/public'));
+app.use(express.static(path.join(__dirname, '/public'), { extensions: ['html'] }));
+
 
 app.get('/login', (req, res) => {
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
 
-    // HERE: your application requests authorization
-    const scope = 'user-read-private user-read-email user-top-read';
+    const scope = appAuthorization.join(' ');
 
     const params = new URLSearchParams({
         response_type: 'code',
@@ -38,24 +46,19 @@ app.get('/login', (req, res) => {
         state: state,
     });
     const URL = 'https://accounts.spotify.com/authorize?' + params.toString();
-    console.log(URL);
 
     res.redirect(URL);
 });
 
 app.get('/callback', (req, res) => {
-    // your application requests refresh and access tokens
-    // after checking the state parameter
-
     const code = req.query.code || null;
     const state = req.query.state || null;
     const storedState = req.cookies ? req.cookies[stateKey] : null;
 
     if (state === null || state !== storedState) {
-        res.redirect('/#error=state_mismatch');
+        res.status(400).send('state_mismatch');
     } else {
         res.clearCookie(stateKey);
-        console.log('HERE');
 
         let data;
         if (code) {
@@ -76,26 +79,34 @@ app.get('/callback', (req, res) => {
                 Authorization: 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')),
             },
         }).then((response) => {
-            console.log(response.data);
             if (response.status === 200) {
-                const access_token = response.data.access_token;
-                const refresh_token = response.data.refresh_token;
-
-                // use the access token to access the Spotify Web API
-                axios.get('https://api.spotify.com/v1/me', {
-                    headers: {
-                        'Authorization': 'Bearer ' + access_token,
-                    },
-                }).then((response) => {
-                    console.log(response.data);
-                });
+                res.cookie('access_token', response.data.access_token);
+                res.cookie('refresh_token', response.data.refresh_token);
 
                 // we can also pass the token to the browser to make requests from there
-                res.redirect(`/#access_token=${access_token}&refresh_token=${refresh_token}`);
+                res.redirect('/logged');
             }
         }).catch(() => {
-            res.redirect('/#error=invalid_token');
+            res.status(400).send('invalid_token');
         });
+    }
+});
+
+app.get('/tracks', async (req, res) => {
+    try {
+        const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
+        res.send(topTracks);
+    } catch (error) {
+        res.status(400).send('Missing access token');
+    }
+});
+
+app.get('/artists', async (req, res) => {
+    try {
+        const topTracks = await getTopArtists(req.cookies.access_token, 'short_term', 1);
+        res.send(topTracks);
+    } catch (error) {
+        res.status(400).send('Missing access token');
     }
 });
 
