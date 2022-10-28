@@ -44,6 +44,7 @@
         "object-curly-spacing": [
             "error",
             "always"
-        ]
+        ],
+        "@typescript-eslint/no-non-null-assertion": "off"
     }
 }
