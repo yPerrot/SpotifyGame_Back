@@ -6,12 +6,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SpotifyGame</title>
     <link rel="shortcut icon" href="./assets/icon.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>My Spotify Game</h1>
-    <a href="/login" class="btn btn-primary">Log in with Spotify</a>
-<script>
-console.log(document.cookie);
-</script>
+    <header>
+        <div class="logo">WhoIsMyFavorit</div>
+        <div class="header-link" style="--color: red;">
+            <span class="mark"></span>
+            <a href="/Game">
+                <div>Game</div>
+                <div class="hover-elem"></div>
+            </a>
+        </div>
+        <div class="header-link" style="--color: green;">
+            <span class="mark"></span>
+            <a href="/">
+                <div>Infos</div>
+                <div class="hover-elem"></div>    
+            </a>
+        </div>
+    </header>
+
+    <main>
+        <div class="panel">
+            <h1>Who is My Favorite ...</h1>
+            <span class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates voluptas quasi doloribus ipsam aut cupiditate dolorum sapiente iusto pariatur hic ut, modi praesentium? Ducimus, voluptatem.</span>
+            <button class="login">
+                <span>Log in with Spotify</span>
+                <img src="./assets/spotify.svg" alt="Spotify Icon">
+            </button>
+        </div>
+    </main>
+
+    <footer>
+        Made with love by <a href="https://github.com/yPerrot">@yPerrot</a>
+    </footer>
 </body>
 </html>
