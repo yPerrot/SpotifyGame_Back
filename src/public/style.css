@@ -45,10 +45,7 @@
     --border: solid 1px black;
 }
 
-html {
-    font-family: 'Poppins', sans-serif;
-}
-
+/* Reset default style */
 * {
     margin: 0;
     padding: 0;
@@ -59,68 +56,33 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+
+    font-family: 'Poppins', sans-serif;
 }
-.logo {
-    font-family: 'DynaPuff', serif;
-    font-weight: 700;
-    font-size: 1.5rem;
-    padding-inline: 2.5rem;
-}
+
+/*
+ * HEADER
+ */
+
 
 header {
     display: flex;
     border-bottom: var(--border);
 }
 
-header > div {
-    border-right: var(--border);
-    padding: 1.5rem 4rem;
-}
-
-.header-link > a {
-    text-decoration: none;
-    color: inherit;
-}
-
-.header-link > a {
-    position: relative;
-}
-.header-link:hover .hover-elem {
-    width: 100%;    
-}
-
-.hover-elem {
-    position: absolute;
-    left: 0%;
-    top: auto;
-    right: auto;
-    bottom: 0%;
-    width: 0%;
-    height: 2px;
-    background-color: var(--color);
-
-    transition: width 0.3s  ease-in-out;
-}
-
-.mark {
-    display: inline-block;
-    height: 14px;
-    width: 8px;
-
-    background-color: var(--color);
+.logo {
+    padding: 1.5rem 2.5rem;
     
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
+    font-family: 'DynaPuff', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
 
+    border-right: var(--border);
 }
 
-.header-link {
-    cursor: pointer;
-    color: black;
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-}
+/*
+ * INDEX
+ */
 
 main {
     display: flex;
@@ -128,8 +90,9 @@ main {
     align-items: center;
 
     flex: 1;
+}
 
-    
+.login-main {
     background-color: #f1f333;
 }
 
@@ -138,14 +101,15 @@ main {
     box-shadow: 10px 10px 0 0 black;
     
     border-radius: 5px;
-    width: 750px;
+    width: min(85vw, 650px);
+    margin-block: 3rem;
 
     background-color: var(--white);
 
     padding: 2rem;
 }
 
-button {
+.login-btn {
     border: 2px solid black;
 
     font-family: 'Poppins', sans-serif;
@@ -158,8 +122,7 @@ button {
     padding: 1rem 2rem;
 }
 
-button {
-    
+.login-btn {
     display: flex;
     gap: 1rem;
     cursor: pointer;
@@ -171,15 +134,35 @@ button {
     margin-top: 4rem;
 }
 
-img {
+.login-btn:hover {
+    transform: translate(-5px, -5px);
+    box-shadow: 5px 5px 0 0 black;
+}
+
+.login-btn > img {
     height: 40px;
     width: 40px;
 }
 
-button:hover {
-    transform: translate(-5px, -5px);
-    box-shadow: 5px 5px 0 0 black;
+@media (max-width: 640px) {
+    .panel {
+        padding: 1rem;
+    }
+    
+    .login-btn {
+        font-size: 1rem;
+    }
+    
+    .login-btn > img {
+        height: 20px;
+        width: 20px;
+    }
 }
+
+/* 
+ * FOOTER
+ */
+
 
 footer {
     padding: 1rem 0;
