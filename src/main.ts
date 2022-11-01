@@ -28,6 +28,13 @@ const appAuthorization = [
 
 app.use(cors()).use(cookieParser());
 
+
+/**
+ * Express Routing:
+ * http://expressjs.com/en/guide/routing.html
+ */
+
+
 // Main point
 app.use(express.static(path.join(__dirname, '/public'), { extensions: ['html'] }));
 
@@ -103,7 +110,7 @@ app.get('/tracks', async (req, res) => {
 
 app.get('/artists', async (req, res) => {
     try {
-        const topTracks = await getTopArtists(req.cookies.access_token, 'short_term', 1);
+        const topTracks = await getTopArtists(req.cookies.access_token, 'short_term', 10);
         res.send(topTracks);
     } catch (error) {
         res.status(400).send('Missing access token');
