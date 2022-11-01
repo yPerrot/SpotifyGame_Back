@@ -80,6 +80,37 @@ header {
     border-right: var(--border);
 }
 
+.logout {
+    padding: 0.5rem 1rem;
+    margin: 1rem 1rem 1rem auto;
+
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    border: 2px solid black;
+    border-radius: 9999px;
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: black;
+
+    background-color: var(--pink);
+    cursor: pointer;
+    
+    transition: all 140ms cubic-bezier(.25, .46, .45, .94);
+}
+
+.logout:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 3px 3px 0 0 black;
+}
+
+.logout > img {
+    width: 20px;
+}
+
 /*
  * INDEX
  */
@@ -157,6 +188,112 @@ main {
         height: 20px;
         width: 20px;
     }
+}
+
+/*
+ * LOGGED
+ */
+
+.logged-main {
+    flex-direction: column;
+    background-color: var(--yellow);
+    padding: 5rem;
+}
+
+.drag-section > img,
+.drag-elem {
+    border-radius: 50%;
+    height: 150px;
+    display: inline-block;
+}
+
+.drag-section, 
+.drop-section {
+    display: flex;
+    gap: 2rem;
+
+    margin-top: 2rem;
+    cursor: grab;
+}
+
+.drop-section > .drop-elem {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.611);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+
+}
+
+.drop-elem::before {
+    position: absolute;
+    color: white;
+}
+
+/* 1st drop-elem */
+
+.drop-elem:nth-child(1) {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.drop-elem:nth-child(1)::before {
+    content: '1st';
+}
+/* 2nd drop-elem */
+
+.drop-elem:nth-child(2) {
+    background-color: rgba(0, 0, 0, 0.65);
+}
+
+.drop-elem:nth-child(2)::before {
+    content: '2nd';
+}
+/* 3rd drop-elem */
+
+.drop-elem:nth-child(3) {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.drop-elem:nth-child(3)::before {
+    content: '3rd';
+}
+
+
+.drop-elem > img {
+    z-index: 1;
+}
+
+.line {
+    margin-top: 2rem;
+    
+    height: 2px;
+    width: 100%;
+    background-color: #000;
+
+    display: flex;
+}
+
+.line::before {
+    content: '';
+    border: solid black;
+    border-width: 0 8px 8px 0;
+    display: inline-block;
+    padding: 8px;
+    transform: rotate(135deg);
+
+    position: relative;
+    top: -11px;
+
+    border-radius: 2px;
+
+}
+
+.end-arrow {
+    margin-left: auto;
 }
 
 /* 
