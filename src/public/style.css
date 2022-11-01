@@ -41,8 +41,8 @@
     --form-element-height: 3.125rem;
     --faded-text-color: #a8a29e;
 
-    
     --border: solid 1px black;
+    --btn-hover-transition: 5px;
 }
 
 /* Reset default style */
@@ -52,12 +52,43 @@
     box-sizing: border-box;
 }
 
+
+/*
+ * Custom Default Style
+ */
+ 
+ 
 body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 
     font-family: 'Poppins', sans-serif;
+}
+
+.btn {
+    padding: 1rem 2rem;
+
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+
+    border: 2px solid black;
+    border-radius: 9999px;
+
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    color: black;
+
+    cursor: pointer;
+    
+    transition: all 140ms cubic-bezier(.25, .46, .45, .94);
+}
+
+.btn:hover {
+    transform: translate(calc(-1 * var(--btn-hover-transition)), calc(-1 * var(--btn-hover-transition)));
+    box-shadow: var(--btn-hover-transition) var(--btn-hover-transition)  0 0 black;
 }
 
 /*
@@ -80,34 +111,15 @@ header {
     border-right: var(--border);
 }
 
-.logout {
+.logout-btn {
     padding: 0.5rem 1rem;
     margin: 1rem 1rem 1rem auto;
 
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-
-    border: 2px solid black;
-    border-radius: 9999px;
-
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 1rem;
-    color: black;
-
     background-color: var(--pink);
-    cursor: pointer;
-    
-    transition: all 140ms cubic-bezier(.25, .46, .45, .94);
+    --btn-hover-transition: 3px;
 }
 
-.logout:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 3px 3px 0 0 black;
-}
-
-.logout > img {
+.logout-btn > img {
     width: 20px;
 }
 
@@ -141,33 +153,12 @@ main {
 }
 
 .login-btn {
-    border: 2px solid black;
-
-    font-family: 'Poppins', sans-serif;
-    font-weight: 600;
-    font-size: 2rem;
-    color: black;
-
-    background-color: hsl(148, 100%, 50%);
-    border-radius: 9999px;
-    padding: 1rem 2rem;
-}
-
-.login-btn {
-    display: flex;
-    gap: 1rem;
-    cursor: pointer;
-    
-    transition: all 140ms cubic-bezier(.25, .46, .45, .94);
-    align-items: center;
-    
     margin: 0 auto;
     margin-top: 4rem;
-}
 
-.login-btn:hover {
-    transform: translate(-5px, -5px);
-    box-shadow: 5px 5px 0 0 black;
+    font-size: 2rem;
+
+    background-color: hsl(148, 100%, 50%);
 }
 
 .login-btn > img {
