@@ -102,7 +102,11 @@ app.get('/callback', (req, res) => {
                 res.cookie('refresh_token', response.data.refresh_token);
 
                 // we can also pass the token to the browser to make requests from there
-                res.redirect('/logged');
+                const params = new URLSearchParams({
+                    access_token: response.data.access_token,
+                    refresh_token: response.data.refresh_token,
+                });
+                res.redirect('http://127.0.0.1:5173/?' + params.toString());
             }
         }).catch(() => {
             res.status(400).send('invalid_token');
@@ -111,8 +115,13 @@ app.get('/callback', (req, res) => {
 });
 
 app.get('/tracks', async (req, res) => {
+    const { access_token } = req.query;
+
+    if (!access_token) res.status(400).send('Missing access token');
+
     try {
-        const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
+        const topTracks = await getTopTracks(access_token as string, 'short_term', 10);
+        // const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
 
         res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
         res.setHeader('Access-Control-Allow-Credentials', 'true');
