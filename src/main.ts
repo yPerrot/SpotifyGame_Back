@@ -25,7 +25,10 @@ const appAuthorization = [
     'user-top-read',
 ];
 
-app.use(cors()).use(cookieParser());
+app.use(cors({
+    origin: 'http://127.0.0.1:5173',
+    preflightContinue: true, // Use full?
+})).use(cookieParser());
 
 
 /**
@@ -33,6 +36,19 @@ app.use(cors()).use(cookieParser());
  * http://expressjs.com/en/guide/routing.html
  */
 
+// Intercepts OPTIONS method
+app.use((req, res, next) => {
+    // res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    res.header('Access-Control-Allow-Credentials', 'true');
+
+    if (req.method === 'OPTIONS') {
+        res.sendStatus(200);
+    } else {
+        next();
+    }
+});
 
 app.get('/login', (req, res) => {
     const state = generateRandomString(16);
@@ -97,6 +113,10 @@ app.get('/callback', (req, res) => {
 app.get('/tracks', async (req, res) => {
     try {
         const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
+
+        res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+
         res.send(topTracks);
     } catch (error) {
         res.status(400).send('Missing access token');
