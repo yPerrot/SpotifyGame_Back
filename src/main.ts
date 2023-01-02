@@ -133,9 +133,18 @@ app.get('/tracks', async (req, res) => {
 });
 
 app.get('/artists', async (req, res) => {
+    const { access_token } = req.query;
+
+    if (!access_token) res.status(400).send('Missing access token');
+
     try {
-        const topTracks = await getTopArtists(req.cookies.access_token, 'short_term', 10);
-        res.send(topTracks);
+        const topArtists = await getTopArtists(access_token as string, 'short_term', 10);
+        // const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
+
+        res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+        res.setHeader('Access-Control-Allow-Credentials', 'true');
+
+        res.send(topArtists);
     } catch (error) {
         res.status(400).send('Missing access token');
     }
