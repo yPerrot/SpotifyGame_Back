@@ -133,12 +133,12 @@ app.get('/tracks', async (req, res) => {
 });
 
 app.get('/artists', async (req, res) => {
-    const { access_token } = req.query;
+    const { access_token, limit } = req.query;
 
     if (!access_token) res.status(400).send('Missing access token');
 
     try {
-        const topArtists = await getTopArtists(access_token as string, 'short_term', 10);
+        const topArtists = await getTopArtists(access_token as string, 'long_term', parseInt(limit as string) || 10);
         // const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
 
         res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
