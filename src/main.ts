@@ -150,6 +150,32 @@ app.get('/artists', async (req, res) => {
     }
 });
 
+/**
+ * Refresh invalid Access_Token
+ */
+app.get('/refresh', async (req, res) => {
+    const { access_token, refresh_token } = req.query;
+
+    console.log('Before: ', access_token);
+
+    const formData = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refresh_token as string,
+    });
+
+    axios.post('https://accounts.spotify.com/api/token', formData, {
+        headers: {
+            Authorization: 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')),
+        },
+    }).then((response) => {
+        if (response.status === 200) {
+            res.send(response.data.access_token);
+        }
+    }).catch(() => {
+        res.status(400).send('invalid_token');
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`App listen on port ${PORT}`);
     console.log(`http://localhost:${PORT}`);
