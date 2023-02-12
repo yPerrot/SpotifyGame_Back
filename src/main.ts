@@ -7,7 +7,7 @@ import { generateRandomString } from './utils';
 import { getTopArtists, getTopTracks } from './api';
 
 const app = express();
-dotenv.config();
+dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 // VARIABLES
 const PORT = 8888;
@@ -179,4 +179,5 @@ app.get('/refresh', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`App listen on port ${PORT}`);
     console.log(`http://localhost:${PORT}`);
+    console.log(`redirect_uri: ${redirect_uri}`);
 });

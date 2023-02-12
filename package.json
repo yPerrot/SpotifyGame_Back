@@ -4,8 +4,8 @@
   "description": "A guessing game using Spotify API",
   "main": "src/main.ts",
   "scripts": {
-    "start": "node out/main.js",
-    "dev": "nodemon src/main.ts",
+    "start": "cross-env NODE_ENV=production node out/main.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/main.ts",
     "build": "tsc -p tsconfig.json",
     "deploy": "flyctl deploy"
   },
@@ -21,6 +21,7 @@
     "@types/node": "^18.7.11",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.26.0",
     "eslint-config-google": "^0.14.0",
     "nodemon": "^2.0.19",
@@ -28,10 +29,10 @@
     "typescript": "^4.8.2"
   },
   "dependencies": {
-    "dotenv": "^16.0.3",
     "axios": "^0.27.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.1"
   }
 }
