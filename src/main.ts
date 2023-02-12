@@ -10,7 +10,8 @@ const app = express();
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 
 // VARIABLES
-const PORT = 8888;
+const PORT = process.env.backend_port || 8080;
+const FRONT_URL = process.env.front_url || 'https://spotify-game.netlify.app';
 
 const client_id = process.env.client_id!;
 const client_secret = process.env.client_secret!;
@@ -26,7 +27,7 @@ const appAuthorization = [
 ];
 
 app.use(cors({
-    origin: 'http://127.0.0.1:5173',
+    origin: FRONT_URL,
     preflightContinue: true, // Use full?
 })).use(cookieParser());
 
@@ -106,7 +107,7 @@ app.get('/callback', (req, res) => {
                     access_token: response.data.access_token,
                     refresh_token: response.data.refresh_token,
                 });
-                res.redirect('http://127.0.0.1:5173/?' + params.toString());
+                res.redirect(FRONT_URL + '/?' + params.toString());
             }
         }).catch(() => {
             res.status(400).send('invalid_token');
@@ -123,7 +124,7 @@ app.get('/tracks', async (req, res) => {
         const topTracks = await getTopTracks(access_token as string, 'short_term', 10);
         // const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
 
-        res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+        res.setHeader('Access-Control-Allow-Origin', FRONT_URL);
         res.setHeader('Access-Control-Allow-Credentials', 'true');
 
         res.send(topTracks);
@@ -141,7 +142,7 @@ app.get('/artists', async (req, res) => {
         const topArtists = await getTopArtists(access_token as string, 'long_term', parseInt(limit as string) || 10);
         // const topTracks = await getTopTracks(req.cookies.access_token, 'short_term', 10);
 
-        res.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5173');
+        res.setHeader('Access-Control-Allow-Origin', FRONT_URL);
         res.setHeader('Access-Control-Allow-Credentials', 'true');
 
         res.send(topArtists);
